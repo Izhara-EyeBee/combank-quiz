@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ComBank Digital Quiz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+        }
+
+        /* Header Pattern with Sketchy Texture */
+        .header-bg {
+            background-color: #0070ba;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(77, 184, 72, 0.15) 0%, transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(77, 184, 72, 0.15) 0%, transparent 25%),
+                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        /* Shimmer Animation */
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .shimmer-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to right,
+                transparent 0%,
+                rgba(255, 255, 255, 0.05) 30%,
+                rgba(255, 255, 255, 0.3) 50%,
+                rgba(255, 255, 255, 0.05) 70%,
+                transparent 100%
+            );
+            animation: shimmer 3s infinite ease-in-out;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        /* Custom radio button styling */
+        input[type="radio"]:checked + div {
+            border-color: #4db848;
+            background-color: #f0fdf4;
+            color: #14532d;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="radio"]:checked + div .radio-circle {
+            background-color: #4db848;
+            border-color: #4db848;
+        }
+
+        input[type="radio"]:checked + div .radio-circle::after {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .radio-circle::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .option-content {
+            transition: all 0.2s ease;
+        }
+
+        .option-content:hover {
+            border-color: #0070ba;
+            background-color: #f8fafc;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col">
+
+    <!-- Professional Header -->
+    <header class="header-bg text-white shadow-xl sticky top-0 z-50 border-b-4 border-[#4db848] transition-all duration-300 hover:shadow-2xl overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-[#0070ba]/95 via-[#005a9c]/95 to-[#00427a]/95 backdrop-blur-sm z-0"></div>
+        <div class="shimmer-effect"></div>
+        
+        <div class="relative max-w-4xl mx-auto px-6 py-4 flex items-center justify-between z-20">
+            <div class="flex items-center gap-4 group/logo cursor-default">
+                <div class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center shadow-lg backdrop-blur-md transition-all duration-300 group-hover/logo:scale-110 group-hover/logo:bg-white/20 group-hover/logo:border-[#4db848]/50 group-hover/logo:shadow-[0_0_15px_rgba(77,184,72,0.4)]">
+                    <i class="fa-solid fa-shield-halved text-2xl text-[#4db848] drop-shadow-sm transition-transform duration-300 group-hover/logo:rotate-12 group-hover/logo:text-white"></i>
+                </div>
+                
+                <div class="flex flex-col">
+                    <h1 class="font-extrabold text-2xl tracking-tight leading-none text-white drop-shadow-md transition-all duration-300">
+                        Digital <span class="text-[#4db848] transition-colors duration-300 group-hover/logo:text-white group-hover/logo:underline decoration-[#4db848] decoration-2 underline-offset-4">Quiz</span>
+                    </h1>
+                    <div class="flex items-center gap-2 mt-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-[#4db848] animate-pulse group-hover/logo:bg-white"></span>
+                        <p class="text-xs text-blue-100 font-medium uppercase tracking-widest opacity-90 transition-opacity duration-300 group-hover/logo:opacity-100">Security Awareness</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hidden sm:block">
+                <div class="flex items-center gap-3 bg-black/20 border border-white/10 px-4 py-2 rounded-full backdrop-blur-md shadow-inner transition-all duration-300 hover:bg-black/30 hover:border-[#4db848]/40 hover:scale-105 hover:shadow-lg group/counter cursor-default">
+                    <div class="flex flex-col items-end">
+                        <span class="text-[10px] text-blue-200 font-bold uppercase tracking-wider leading-none transition-colors group-hover/counter:text-white">Total</span>
+                        <span class="text-sm font-bold text-white leading-none">Questions</span>
+                    </div>
+                    <div class="h-6 w-[1px] bg-white/20 mx-1 transition-colors group-hover/counter:bg-[#4db848]/50"></div>
+                    <span class="text-xl font-black text-white leading-none font-mono transition-colors group-hover/counter:text-[#4db848] drop-shadow-md">10</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow w-full max-w-3xl mx-auto px-4 py-8 mb-20">
+        
+        <!-- === QUIZ PAGE === -->
+        <div id="quizPage" class="animate-fade-in">
+            <!-- Intro Card -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 mb-8 text-center relative overflow-hidden transition-all hover:shadow-md">
+                <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-[#0070ba] to-[#4db848]"></div>
+                <h2 class="text-2xl font-bold text-slate-800 mb-3">Let's test your knowledge</h2>
+                <p class="text-slate-500 max-w-lg mx-auto leading-relaxed">Complete the quiz below to check your digital banking security awareness score.</p>
+            </div>
+
+            <form id="quizForm" onsubmit="return false;" class="space-y-8">
+
+                <!-- Questions Container -->
+                <div class="space-y-6">
+                    <!-- Q1 -->
+                    <div class="question-card bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-lg transition-all duration-300 group" id="card-q1">
+                        <div class="px-8 py-5 border-b border-slate-100 flex items-start gap-4">
+                             <span class="shrink-0 flex items-center justify-center w-8 h-8 rounded-lg bg-slate-100 border border-slate-200 text-slate-500 font-bold text-sm">1</span>
+                             <p class="text-lg font-bold text-slate-800 leading-snug pt-0.5">What is phishing?</p>
+                        </div>
+                        <div class="p-8 pt-6 bg-gradient-to-b from-white to-slate-50/30">
+                            <div class="space-y-3">
+                                <label class="block cursor-pointer relative group/option">
+                                    <input type="radio" name="q1" value="A" class="hidden">
+                                    <div class="option-content border border-slate-200 rounded-xl p-4 flex items-center gap-4 transition-all bg-white hover:shadow-md">
+                                        <div class="radio-circle w-5 h-5 border-2 border-slate-300 rounded-full relative flex-shrink-0"></div>
+                                        <span class="text-slate-600 font-medium flex-grow">A type of fish</span>
+                                    </div>
+                                </label>
+                                <label class="block cursor-pointer relative group/option">
+                                    <input type="radio" name="q1" value="B" class="hidden">
+                                    <div class="option-content border border-slate-200 rounded-xl p-4 flex items-center gap-4 transition-all bg-white hover:shadow-md">
+                                        <div class="radio-circle w-5 h-5 border-2 border-slate-300 rounded-full relative flex-shrink-0"></div>
+                                        <span class="text-slate-600 font-medium flex-grow">A way to trick people into giving personal banking information</span>
+                                    </div>
+                                </label>
+                                <label class="block cursor-pointer relative group/option">
+                                    <input type="radio" name="q1" value="C" class="hidden">
+                                    <div class="option-content border border-slate-200 rounded-xl p-4 flex items-center gap-4 transition-all bg-white hover:shadow-md">
+                                        <div class="radio-circle w-5 h-5 border-2 border-slate-300 rounded-full relative flex-shrink-0"></div>
+                                        <span class="text-slate-600 font-medium flex-grow">A bank’s security system</span>
+                                    </div>
+                                </label>
+                                <label class="block cursor-pointer relative group/option">
+                                    <input type="radio" name="q1" value="D" class="hidden">
+                                    <div class="option-content border border-slate-200 rounded-xl p-4 flex items-center gap-4 transition-all bg-white hover:shadow-md">
+                                        <div class="radio-circle w-5 h-5 border-2 border-slate-300 rounded-full relative flex-shrink-0"></div>
+                                        <span class="text-slate-600 font-medium flex-grow">A password manager</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Q2 -->
+                    <div class="question-card bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-lg transition-all duration-300 group" id="card-q2">
+                        <div class="px-8 py-5 border-b border-slate-100 flex items-start gap-4">
+                             <span class="shrink-0 flex items-center justify-center w-8 h-8 rounded-lg bg-slate-100 border border-slate-200 text-slate-500 font-bold text-sm">2</span>
+                             <p class="text-lg font-bold text-slate-800 leading-snug pt-0.5">Which of the following is a sign of a fake banking email or message?</p>
+                        </div>
+                        <div class="p-8 pt-6 bg-gradient-to-b from-white to-slate-50/30">
+                            <div class="space-y-3">
+                                <label class="block cursor-pointer relative group/option">
+                                    <input type="radio" name="q2" value="A" class="hidden">
+                                    <div class="option-content border border-slate-200 rounded-xl p-4 flex items-center gap-4 transition-all bg-white hover:shadow-md">
+                                        <div class="radio-circle w-5 h-5 border-2 border-slate-300 rounded-full relative flex-shrink-0"></div>
+                                        <span class="text-slate-600 font-medium flex-grow">Correct grammar and official logo</span>
+                                    </div>
+                                </label>
+                                <label class="block cursor-pointer relative group/option">
+                                    <input type="radio" name="q2" value="B" class="hidden">
+                                    <div class="option-content border border-slate-200 rounded-xl p-4 flex items-center gap-4 transition-all bg-white hover:shadow-md">
+                                        <div class="radio-circle w-5 h-5 border-2 border-slate-300 rounded-full relative flex-shrink-0"></div>
+                                        <span class="text-slate-600 font-medium flex-grow">Spelling mistakes, suspicious links, and requests for info</span>
+                                    </div>
+                                </label>
+                                <label class="block cursor-pointer relative group/option">
+                                    <input type="radio" name="q2" value="C" class="hidden">
+                                    <div class="option-content border border-slate-200 rounded-xl p-4 flex items-center gap-4 transition-all bg-white hover:shadow-md">
+                                        <div class="radio-circle w-5 h-5 border-2 border-slate-300 rounded-full relative flex-shrink-0"></div>
+                                        <span class="text-slate-600 font-medium flex-grow">Personalized greeting with your name</span>
+                                    </div>
+                                </label>
+                                <label class="block cursor-pointer relative group/option">
+                                    <input type="radio" name="q2" value="D" class="hidden">
+                                    <div class="option-content border border-slate-200 rounded-xl p-4 flex items-center gap-4 transition-all bg-white hover:shadow-md">
+                                        <div class="radio-circle w-5 h-5 border-2 border-slate-300 rounded-full relative flex-shrink-0"></div>
+                                        <span class="text-slate-600 font-medium flex-grow">App notification from official banking app</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Q3 -->
+                    <div class="question-card bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-lg transition-all duration-300 group" id="card-q3">
+                        <div class="px-8 py-5 border-b border-slate-100 flex items-start gap-4">
+                             <span class="shrink-0 flex items-center justify-center w-8 h-8 rounded-lg bg-slate-100 border border-slate-200 text-slate-500 font-bold text-sm">3</span>
+                             <p class="text-lg font-bold text-slate-800 leading-snug pt-0.5">Why should you never share your OTP (One-Time Password)?</p>
+                        </div>
+                        <div class="p-8 pt-6 bg-gradient-to-b from-white to-slate-50/30">
+                            <div class="space-y-3">
+                                <label class="block cursor-pointer relative group/option">
+                                    <input type="radio" name="q3" value="A" class="hidden">
+                                    <div class="option-content border border-slate-200 rounded-xl p-4 flex items-center gap-4 transition-all bg-white hover:shadow-md">
+                                        <div class="radio-circle w-5 h-5 border-2 border-slate-300 rounded-full relative flex-shrink-0"></div>
+                                        <span class="text-slate-600 font-medium flex-grow">It’s not important</span>
+                                    </div>
+                                </label>
+                                <label class="block cursor-pointer relative group/option">
+                                    <input type="radio" name="q3" value="B" class="hidden">
+                                    <div class="option-content border border-slate-200 rounded-xl p-4 flex items-center gap-4 transition-all bg-white hover:shadow-md">
+                                        <div class="radio-circle w-5 h-5 border-2 border-slate-300 rounded-full relative flex-shrink-0"></div>
+                                        <span class="text-slate-600 font-medium flex-grow">It allows fraudsters to access your account</span>
+                                    </div>
+                                </label>
+                                <label class="block cursor-pointer relative group/option">
+                                    <input type="radio" name="q3" value="C" class="hidden">
+                                    <div class="option-content border border-slate-200 rounded-xl p-4 flex items-center gap-4 transition-all bg-white hover:shadow-md">
+                                        <div class="radio-circle w-5 h-5 border-2 border-slate-300 rounded-full relative flex-shrink-0"></div>
+                                        <span class="text-slate-600 font-medium flex-grow">Banks don’t use OTPs anymore</span>
+                                    </div>
+                                </label>
+                                <label class="block cursor-pointer relative group/option">
+                                    <input type="radio" name="q3" value="D" class="hidden">
+                                    <div class="option-content border border-slate-200 rounded-xl p-4 flex items-center gap-4 transition-all bg-white hover:shadow-md">
+                                        <div class="radio-circle w-5 h-5 border-2 border-slate-300 rounded-full relative flex-shrink-0"></div>
+                                        <span class="text-slate-600 font-medium flex-grow">It only works on weekends</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Q4 -->
+                    <div class="question-card bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-lg transition-all duration-300 group" id="card-q4">
+                        <div class="px-8 py-5 border-b border-slate-100 flex items-start gap-4">
+                             <span class="shrink-0 flex items-center justify-center w-8 h-8 rounded-lg bg-slate-100 border border-slate-200 text-slate-500 font-bold text-sm">4</span>
+                             <p class="text-lg font-bold text-slate-800 leading-snug pt-0.5">What is the safest way to access ComBank Digital?</p>
+                        </div>
+                        <div class="p-8 pt-6 bg-gradient-to-b from-white to-slate-50/30">
+                            <div class="space-y-3">
+                                <label class="block cursor-pointer relative group/option">
+                                    <input type="radio" name="q4" value="A" class="hidden">
+                                    <div class="option-content border border-slate-200 rounded-xl p-4 flex items-center gap-4 transition-all bg-white hover:shadow-md">
+                                        <div class="radio-circle w-5 h-5 border-2 border-slate-300 rounded-full relative flex-shrink-0"></div>
+                                        <span class="text-slate-600 font-medium flex-grow">Using the official app or website</span>
+                                    </div>
+                                </label>
+                                <label class="block cursor-pointer relative group/option">
+                                    <input type="radio" name="q4" value="B" class="hidden">
+                                    <div class="option-content border border-slate-200 rounded-xl p-4 flex items-center gap-4 transition-all bg-white hover:shadow-md">
+                                        <div class="radio-circle w-5 h-5 border-2 border-slate-300 rounded-full relative flex-shrink-0"></div>
+                                        <span class="text-slate-600 font-medium flex-grow">Using public Wi-Fi</span>
+                                    </div>
+                                </label>
+                                <label class="block cursor-pointer relative group/option">
+                                    <input type="radio" name="q4" value="C" class="hidden">
+                                    <div class="option-content border border-slate-200 rounded-xl p-4 flex items-center gap-4 transition-all bg-white hover:shadow-md">
+                                        <div class="radio-circle w-5 h-5 border-2 border-slate-300 rounded-full relative flex-shrink-0"></div>
+                                        <span class="text-slate-600 font-medium flex-grow">Through unknown links in emails</span>
+                                    </div>
+                                </label>
+                                <label class="block cursor-pointer relative group/option">
+                                    <input type="radio" name="q4" value="D" class="hidden">
+                                    <div class="option-content border border-slate-200 rounded-xl p-4 flex items-center gap-4 transition-all bg-white hover:shadow-md">
+                                        <div class="radio-circle w-5 h-5 border-2 border-slate-300 rounded-full relative flex-shrink-0"></div>
+                                        <span class="text-slate-600 font-medium flex-grow">By sharing your password with friends</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Q5 -->
+                    <div class="question-card bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-lg transition-all duration-300 group" id="card-q5">
+                        <div class="px-8 py-5 border-b border-slate-100 flex items-start gap-4">
+                             <span class="shrink-0 flex items-center justify-center w-8 h-8 rounded-lg bg-slate-100 border border-slate-200 text-slate-500 font-bold text-sm">5</span>
+                             <p class="text-lg font-bold text-slate-800 leading-snug pt-0.5">What does two-factor authentication (2FA) do?</p>
+                        </div>
+                        <div class="p-8 pt-6 bg-gradient-to-b from-white to-slate-50/30">
+                            <div class="space-y-3">
+                                <label class="block cursor-pointer relative group/option">
+                                    <input type="radio" name="q5" value="A" class="hidden">
+                                    <div class="option-content border border-slate-200 rounded-xl p-4 flex items-center gap-4 transition-all bg-white hover:shadow-md">
+                                        <div class="radio-circle w-5 h-5 border-2 border-slate-300 rounded-full relative flex-shrink-0"></div>
+                                        <span class="text-slate-600 font-medium flex-grow">Makes the app look fancy</span>
+                                    </div>
+                                </label>
+                                <label class="block cursor-pointer relative group/option">
+                                    <input type="radio" name="q5" value="B" class="hidden">
+                                    <div class="option-content border border-slate-200 rounded-xl p-4 flex items-center gap-4 transition-all bg-white hover:shadow-md">
+                                        <div class="radio-circle w-5 h-5 border-2 border-slate-300 rounded-full relative flex-shrink-0"></div>
+                                        <span class="text-slate-600 font-medium flex-grow">Speeds up transactions</span>
+                                    </div>
+                                </label>
+                                <label class="block cursor-pointer relative group/option">
+                                    <input type="radio" name="q5" value="C" class="hidden">
+                                    <div class="option-content border border-slate-200 rounded-xl p-4 flex items-center gap-4 transition-all bg-white hover:shadow-md">
+                                        <div class="radio-circle w-5 h-5 border-2 border-slate-300 rounded-full relative flex-shrink-0"></div>
+                                        <span class="text-slate-600 font-medium flex-grow">Lets you log in twice</span>
+                                    </div>
+                                </label>
+                                <label class="block cursor-pointer relative group/option">
+                                    <input type="radio" name="q5" value="D" class="hidden">
+                                    <div class="option-content border border-slate-200 rounded-xl p-4 flex items-center gap-4 transition-all bg-white hover:shadow-md">
+                                        <div class="radio-circle w-5 h-5 border-2 border-slate-300 rounded-full relative flex-shrink-0"></div>
+                                        <span class="text-slate-600 font-medium flex-grow">Adds extra security by requiring a password and verification code</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Q6 -->
+                    <div class="question-card bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-lg transition-all duration-300 group" id="card-q6">
+                        <div class="px-8 py-5 border-b border-slate-100 flex items-start gap-4">
+                             <span class="shrink-0 flex items-center justify-center w-8 h-8 rounded-lg bg-slate-100 border border-slate-200 text-slate-500 font-bold text-sm">6</span>
+                             <p class="text-lg font-bold text-slate-800 leading-snug pt-0.5">What should you do if you receive a suspicious link claiming to be from the bank?</p>
+                        </div>
+                        <div class="p-8 pt-6 bg-gradient-to-b from-white to-slate-50/30">
+                            <div class="space-y-3">
+                                <label class="block cursor-pointer relative group/option">
+                                    <input type="radio" name="q6" value="A" class="hidden">
+                                    <div class="option-content border border-slate-200 rounded-xl p-4 flex items-center gap-4 transition-all bg-white hover:shadow-md">
+                                        <div class="radio-circle w-5 h-5 border-2 border-slate-300 rounded-full relative flex-shrink-0"></div>
+                                        <span class="text-slate-600 font-medium flex-grow">Click it to check</span>
+                                    </div>
+                                </label>
+                                <label class="block cursor-pointer relative group/option">
+                                    <input type="radio" name="q6" value="B" class="hidden">
+                                    <div class="option-content border border-slate-200 rounded-xl p-4 flex items-center gap-4 transition-all bg-white hover:shadow-md">
+                                        <div class="radio-circle w-5 h-5 border-2 border-slate-300 rounded-full relative flex-shrink-0"></div>
+                                        <span class="text-slate-600 font-medium flex-grow">Forward it to friends</span>
+                                    </div>
+                                </label>
+                                <label class="block cursor-pointer relative group/option">
+                                    <input type="radio" name="q6" value="C" class="hidden">
+                                    <div class="option-content border border-slate-200 rounded-xl p-4 flex items-center gap-4 transition-all bg-white hover:shadow-md">
+                                        <div class="radio-circle w-5 h-5 border-2 border-slate-300 rounded-full relative flex-shrink-0"></div>
+                                        <span class="text-slate-600 font-medium flex-grow">Ignore, report to the bank and delete the message</span>
+                                    </div>
+                                </label>
+                                <label class="block cursor-pointer relative group/option">
+                                    <input type="radio" name="q6" value="D" class="hidden">
+                                    <div class="option-content border border-slate-200 rounded-xl p-4 flex items-center gap-4 transition-all bg-white hover:shadow-md">
+                                        <div class="radio-circle w-5 h-5 border-2 border-slate-300 rounded-full relative flex-shrink-0"></div>
+                                        <span class="text-slate-600 font-medium flex-grow">Reply with your account details</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Q7 -->
+                    <div class="question-card bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-lg transition-all duration-300 group" id="card-q7">
+                        <div class="px-8 py-5 border-b border-slate-100 flex items-start gap-4">
+                             <span class="shrink-0 flex items-center justify-center w-8 h-8 rounded-lg bg-slate-100 border border-slate-200 text-slate-500 font-bold text-sm">7</span>
+                             <p class="text-lg font-bold text-slate-800 leading-snug pt-0.5">Why should you update your banking app regularly?</p>
+                        </div>
+                        <div class="p-8 pt-6 bg-gradient-to-b from-white to-slate-50/30">
+                            <div class="space-y-3">
+                                <label class="block cursor-pointer relative group/option">
+                                    <input type="radio" name="q7" value="A" class="hidden">
+                                    <div class="option-content border border-slate-200 rounded-xl p-4 flex items-center gap-4 transition-all bg-white hover:shadow-md">
+                                        <div class="radio-circle w-5 h-5 border-2 border-slate-300 rounded-full relative flex-shrink-0"></div>
+                                        <span class="text-slate-600 font-medium flex-grow">To get new features</span>
+                                    </div>
+                                </label>
+                                <label class="block cursor-pointer relative group/option">
+                                    <input type="radio" name="q7" value="B" class="hidden">
+                                    <div class="option-content border border-slate-200 rounded-xl p-4 flex items-center gap-4 transition-all bg-white hover:shadow-md">
+                                        <div class="radio-circle w-5 h-5 border-2 border-slate-300 rounded-full relative flex-shrink-0"></div>
+                                        <span class="text-slate-600 font-medium flex-grow">To look modern</span>
+                                    </div>
+                                </label>
+                                <label class="block cursor-pointer relative group/option">
+                                    <input type="radio" name="q7" value="C" class="hidden">
+                                    <div class="option-content border border-slate-200 rounded-xl p-4 flex items-center gap-4 transition-all bg-white hover:shadow-md">
+                                        <div class="radio-circle w-5 h-5 border-2 border-slate-300 rounded-full relative flex-shrink-0"></div>
+                                        <span class="text-slate-600 font-medium flex-grow">Updates include security patches to protect against threats</span>
+                                    </div>
+                                </label>
+                                <label class="block cursor-pointer relative group/option">
+                                    <input type="radio" name="q7" value="D" class="hidden">
+                                    <div class="option-content border border-slate-200 rounded-xl p-4 flex items-center gap-4 transition-all bg-white hover:shadow-md">
+                                        <div class="radio-circle w-5 h-5 border-2 border-slate-300 rounded-full relative flex-shrink-0"></div>
+                                        <span class="text-slate-600 font-medium flex-grow">Updates are optional</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Q8 -->
+                    <div class="question-card bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-lg transition-all duration-300 group" id="card-q8">
+                        <div class="px-8 py-5 border-b border-slate-100 flex items-start gap-4">
+                             <span class="shrink-0 flex items-center justify-center w-8 h-8 rounded-lg bg-slate-100 border border-slate-200 text-slate-500 font-bold text-sm">8</span>
+                             <p class="text-lg font-bold text-slate-800 leading-snug pt-0.5">Can you trust emails claiming you won a prize and asking for account details?</p>
+                        </div>
+                        <div class="p-8 pt-6 bg-gradient-to-b from-white to-slate-50/30">
+                            <div class="space-y-3">
+                                <label class="block cursor-pointer relative group/option">
+                                    <input type="radio" name="q8" value="A" class="hidden">
+                                    <div class="option-content border border-slate-200 rounded-xl p-4 flex items-center gap-4 transition-all bg-white hover:shadow-md">
+                                        <div class="radio-circle w-5 h-5 border-2 border-slate-300 rounded-full relative flex-shrink-0"></div>
+                                        <span class="text-slate-600 font-medium flex-grow">Yes, always</span>
+                                    </div>
+                                </label>
+                                <label class="block cursor-pointer relative group/option">
+                                    <input type="radio" name="q8" value="B" class="hidden">
+                                    <div class="option-content border border-slate-200 rounded-xl p-4 flex items-center gap-4 transition-all bg-white hover:shadow-md">
+                                        <div class="radio-circle w-5 h-5 border-2 border-slate-300 rounded-full relative flex-shrink-0"></div>
+                                        <span class="text-slate-600 font-medium flex-grow">No, legitimate banks never ask for sensitive info via email</span>
+                                    </div>
+                                </label>
+                                <label class="block cursor-pointer relative group/option">
+                                    <input type="radio" name="q8" value="C" class="hidden">
+                                    <div class="option-content border border-slate-200 rounded-xl p-4 flex items-center gap-4 transition-all bg-white hover:shadow-md">
+                                        <div class="radio-circle w-5 h-5 border-2 border-slate-300 rounded-full relative flex-shrink-0"></div>
+                                        <span class="text-slate-600 font-medium flex-grow">Only if it has a bank logo</span>
+                                    </div>
+                                </label>
+                                <label class="block cursor-pointer relative group/option">
+                                    <input type="radio" name="q8" value="D" class="hidden">
+                                    <div class="option-content border border-slate-200 rounded-xl p-4 flex items-center gap-4 transition-all bg-white hover:shadow-md">
+                                        <div class="radio-circle w-5 h-5 border-2 border-slate-300 rounded-full relative flex-shrink-0"></div>
+                                        <span class="text-slate-600 font-medium flex-grow">Only if it comes in the morning</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Q9 -->
+                    <div class="question-card bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-lg transition-all duration-300 group" id="card-q9">
+                        <div class="px-8 py-5 border-b border-slate-100 flex items-start gap-4">
+                             <span class="shrink-0 flex items-center justify-center w-8 h-8 rounded-lg bg-slate-100 border border-slate-200 text-slate-500 font-bold text-sm">9</span>
+                             <p class="text-lg font-bold text-slate-800 leading-snug pt-0.5">What is malware?</p>
+                        </div>
+                        <div class="p-8 pt-6 bg-gradient-to-b from-white to-slate-50/30">
+                            <div class="space-y-3">
+                                <label class="block cursor-pointer relative group/option">
+                                    <input type="radio" name="q9" value="A" class="hidden">
+                                    <div class="option-content border border-slate-200 rounded-xl p-4 flex items-center gap-4 transition-all bg-white hover:shadow-md">
+                                        <div class="radio-circle w-5 h-5 border-2 border-slate-300 rounded-full relative flex-shrink-0"></div>
+                                        <span class="text-slate-600 font-medium flex-grow">Harmful software that can steal banking details or money</span>
+                                    </div>
+                                </label>
+                                <label class="block cursor-pointer relative group/option">
+                                    <input type="radio" name="q9" value="B" class="hidden">
+                                    <div class="option-content border border-slate-200 rounded-xl p-4 flex items-center gap-4 transition-all bg-white hover:shadow-md">
+                                        <div class="radio-circle w-5 h-5 border-2 border-slate-300 rounded-full relative flex-shrink-0"></div>
+                                        <span class="text-slate-600 font-medium flex-grow">A security guard</span>
+                                    </div>
+                                </label>
+                                <label class="block cursor-pointer relative group/option">
+                                    <input type="radio" name="q9" value="C" class="hidden">
+                                    <div class="option-content border border-slate-200 rounded-xl p-4 flex items-center gap-4 transition-all bg-white hover:shadow-md">
+                                        <div class="radio-circle w-5 h-5 border-2 border-slate-300 rounded-full relative flex-shrink-0"></div>
+                                        <span class="text-slate-600 font-medium flex-grow">A type of banking app</span>
+                                    </div>
+                                </label>
+                                <label class="block cursor-pointer relative group/option">
+                                    <input type="radio" name="q9" value="D" class="hidden">
+                                    <div class="option-content border border-slate-200 rounded-xl p-4 flex items-center gap-4 transition-all bg-white hover:shadow-md">
+                                        <div class="radio-circle w-5 h-5 border-2 border-slate-300 rounded-full relative flex-shrink-0"></div>
+                                        <span class="text-slate-600 font-medium flex-grow">A strong password</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Q10 -->
+                    <div class="question-card bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-lg transition-all duration-300 group" id="card-q10">
+                        <div class="px-8 py-5 border-b border-slate-100 flex items-start gap-4">
+                             <span class="shrink-0 flex items-center justify-center w-8 h-8 rounded-lg bg-slate-100 border border-slate-200 text-slate-500 font-bold text-sm">10</span>
+                             <p class="text-lg font-bold text-slate-800 leading-snug pt-0.5">Which of the following is a characteristic of a strong password?</p>
+                        </div>
+                        <div class="p-8 pt-6 bg-gradient-to-b from-white to-slate-50/30">
+                            <div class="space-y-3">
+                                <label class="block cursor-pointer relative group/option">
+                                    <input type="radio" name="q10" value="A" class="hidden">
+                                    <div class="option-content border border-slate-200 rounded-xl p-4 flex items-center gap-4 transition-all bg-white hover:shadow-md">
+                                        <div class="radio-circle w-5 h-5 border-2 border-slate-300 rounded-full relative flex-shrink-0"></div>
+                                        <span class="text-slate-600 font-medium flex-grow">Your name and birth year</span>
+                                    </div>
+                                </label>
+                                <label class="block cursor-pointer relative group/option">
+                                    <input type="radio" name="q10" value="B" class="hidden">
+                                    <div class="option-content border border-slate-200 rounded-xl p-4 flex items-center gap-4 transition-all bg-white hover:shadow-md">
+                                        <div class="radio-circle w-5 h-5 border-2 border-slate-300 rounded-full relative flex-shrink-0"></div>
+                                        <span class="text-slate-600 font-medium flex-grow">Simple words like “password123”</span>
+                                    </div>
+                                </label>
+                                <label class="block cursor-pointer relative group/option">
+                                    <input type="radio" name="q10" value="C" class="hidden">
+                                    <div class="option-content border border-slate-200 rounded-xl p-4 flex items-center gap-4 transition-all bg-white hover:shadow-md">
+                                        <div class="radio-circle w-5 h-5 border-2 border-slate-300 rounded-full relative flex-shrink-0"></div>
+                                        <span class="text-slate-600 font-medium flex-grow">A mix of letters, numbers, and symbols and unique</span>
+                                    </div>
+                                </label>
+                                <label class="block cursor-pointer relative group/option">
+                                    <input type="radio" name="q10" value="D" class="hidden">
+                                    <div class="option-content border border-slate-200 rounded-xl p-4 flex items-center gap-4 transition-all bg-white hover:shadow-md">
+                                        <div class="radio-circle w-5 h-5 border-2 border-slate-300 rounded-full relative flex-shrink-0"></div>
+                                        <span class="text-slate-600 font-medium flex-grow">Something easy to remember by everyone</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="button" onclick="checkAnswers()" id="submitBtn" class="w-full bg-gradient-to-r from-[#0070ba] to-[#4db848] hover:shadow-lg hover:shadow-green-500/20 active:scale-[0.98] transition-all duration-200 text-white font-bold py-4 rounded-xl text-lg mt-8 border border-white/10">
+                    Submit Answers
+                </button>
+                
+                <!-- Exit Button (Hidden Initially) -->
+                <button type="button" onclick="exitQuiz()" id="exitBtn" class="hidden w-full bg-red-600 hover:bg-red-700 hover:shadow-lg hover:shadow-red-500/20 active:scale-[0.98] transition-all duration-200 text-white font-bold py-4 rounded-xl text-lg mt-6 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Exit Quiz
+                </button>
+
+            </form>
+        </div>
+
+        <!-- === RESULTS PAGE === -->
+        <div id="resultsPage" class="hidden animate-fade-in">
+            <div class="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden max-w-2xl mx-auto">
+                <div class="bg-gradient-to-r from-[#0070ba] to-[#4db848] px-8 py-10 text-center text-white relative overflow-hidden">
+                     <div class="absolute inset-0 bg-black/5" style="background-image: radial-gradient(white 1px, transparent 1px); background-size: 20px 20px; opacity: 0.1;"></div>
+                     <div class="relative z-10">
+                        <div id="resultIconContainer" class="mb-6 flex justify-center drop-shadow-md"></div>
+                        <h2 class="text-4xl font-extrabold mb-2 tracking-tight drop-shadow-md" id="resultTitle">Results</h2>
+                        <p class="opacity-90 font-medium text-lg" id="resultMessage">Quiz Completed Successfully</p>
+                    </div>
+                </div>
+
+                <div class="p-8">
+                    <div class="text-center mb-10">
+                        <div class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-3">Final Score</div>
+                        <div class="inline-flex items-center justify-center bg-white rounded-full px-12 py-6 border border-slate-100 shadow-sm ring-4 ring-slate-50">
+                             <div class="text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#0070ba] to-[#4db848]" id="scoreDisplay">0/10</div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-4">
+                        <button onclick="viewAnswers()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-4 rounded-xl transition-all hover:shadow-md hover:scale-[1.01] active:scale-[0.98] flex items-center justify-center gap-2 group border border-slate-200">
+                            <i class="fa-solid fa-eye group-hover:text-[#0070ba] transition-colors"></i> View Correct Answers
+                        </button>
+                    </div>
+                    
+                    <div id="saveStatus" class="mt-6 text-center text-sm text-slate-400"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Thank You Modal -->
+        <div id="thankYouModal" onclick="restartQuiz()" class="fixed inset-0 bg-slate-900/60 z-[60] hidden items-center justify-center backdrop-blur-sm transition-opacity duration-300 cursor-pointer">
+            <div class="bg-white rounded-3xl shadow-2xl p-10 max-w-sm w-full text-center transform scale-100 animate-fade-in border border-white/20 relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#0070ba] to-[#4db848]"></div>
+                <div class="w-24 h-24 bg-green-50 border-4 border-green-100 rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm animate-bounce">
+                    <i class="fa-solid fa-hand-holding-heart text-5xl text-[#4db848]"></i>
+                </div>
+                <h2 class="text-3xl font-extrabold text-slate-800 mb-3 tracking-tight">Thank You!</h2>
+                <p class="text-slate-500 mb-8 leading-relaxed font-medium">We appreciate your participation in the Digital Security Awareness Quiz.</p>
+                <div class="flex items-center justify-center gap-3 text-[#0070ba] font-bold text-sm bg-blue-50 py-3 rounded-xl animate-pulse">
+                <i class="fa-solid fa-rotate-right"></i> Click to restart
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+
+    <script>
+        const correctAnswers = {
+            "q1": "B", "q2": "B", "q3": "B", "q4": "A", "q5": "D",
+            "q6": "C", "q7": "C", "q8": "B", "q9": "A", "q10": "C"
+        };
+
+        function checkAnswers() {
+            // Validate All Questions Answered
+            let allAnswered = true;
+            let firstUnanswered = null;
+            document.querySelectorAll('.question-card').forEach(el => {
+                el.classList.remove('border-red-500', 'ring-2', 'ring-red-200');
+            });
+
+            for (let key in correctAnswers) {
+                const selected = document.querySelector(`input[name="${key}"]:checked`);
+                if (!selected) {
+                    allAnswered = false;
+                    const card = document.getElementById(`card-${key}`);
+                    card.classList.add('border-red-500', 'ring-2', 'ring-red-200');
+                    if (!firstUnanswered) firstUnanswered = card;
+                }
+            }
+
+            if (!allAnswered) {
+                if(firstUnanswered) firstUnanswered.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                alert("Please answer all questions before submitting.");
+                return;
+            }
+
+            // Calculate Score & Apply Highlights for Review
+            let score = 0;
+            const total = Object.keys(correctAnswers).length;
+
+            for (let key in correctAnswers) {
+                const selected = document.querySelector(`input[name="${key}"]:checked`);
+                const correctVal = correctAnswers[key];
+                
+                const radioInputs = document.querySelectorAll(`input[name="${key}"]`);
+                radioInputs.forEach(inp => {
+                   inp.disabled = true;
+                   inp.parentElement.classList.add('cursor-not-allowed');
+                   if(!inp.checked && inp.value !== correctVal) {
+                       inp.nextElementSibling.classList.add('opacity-40', 'grayscale');
+                   }
+                });
+
+                if (selected.value === correctVal) {
+                    score++;
+                    
+                    const container = selected.nextElementSibling;
+                    container.classList.remove('border-slate-200');
+                    container.classList.add('bg-emerald-50', 'border-emerald-500', 'text-emerald-900', 'shadow-md', 'ring-1', 'ring-emerald-200'); 
+                    container.querySelector('.radio-circle').style.backgroundColor = '#10b981';
+                    container.querySelector('.radio-circle').style.borderColor = '#10b981';
+                    
+                    const badge = document.createElement('span');
+                    badge.innerHTML = '<i class="fa-solid fa-check mr-1"></i> CORRECT';
+                    badge.className = "shrink-0 ml-3 px-3 py-1 bg-emerald-600 text-white text-[10px] font-bold uppercase rounded-full shadow-sm tracking-wide flex items-center";
+                    container.appendChild(badge);
+
+                } else {
+                    const container = selected.nextElementSibling;
+                    container.classList.remove('border-slate-200'); 
+                    container.classList.add('bg-red-50', 'border-red-500', 'text-red-900', 'shadow-md', 'ring-1', 'ring-red-200'); 
+                    container.querySelector('.radio-circle').style.backgroundColor = '#ef4444';
+                    container.querySelector('.radio-circle').style.borderColor = '#ef4444';
+                    
+                    const badge = document.createElement('span');
+                    badge.innerHTML = '<i class="fa-solid fa-xmark mr-1"></i> INCORRECT';
+                    badge.className = "shrink-0 ml-3 px-3 py-1 bg-red-600 text-white text-[10px] font-bold uppercase rounded-full shadow-sm tracking-wide flex items-center";
+                    container.appendChild(badge);
+                    
+                    const correctInput = document.querySelector(`input[name="${key}"][value="${correctVal}"]`);
+                    const correctContainer = correctInput.nextElementSibling;
+                    correctContainer.classList.remove('border-slate-200', 'opacity-40', 'grayscale');
+                    correctContainer.classList.add('bg-emerald-50', 'border-emerald-500', 'ring-2', 'ring-emerald-400', 'shadow-md'); 
+                    correctContainer.querySelector('.radio-circle').style.backgroundColor = '#10b981';
+                    correctContainer.querySelector('.radio-circle').style.borderColor = '#10b981';
+                    
+                    const correctBadge = document.createElement('span');
+                    correctBadge.innerHTML = '<i class="fa-solid fa-check mr-1"></i> RIGHT ANSWER';
+                    correctBadge.className = "shrink-0 ml-3 px-3 py-1 bg-emerald-100 text-emerald-700 text-[10px] font-bold uppercase rounded-full border border-emerald-200 tracking-wide flex items-center";
+                    correctContainer.appendChild(correctBadge);
+                }
+            }
+
+            // Show Results
+            showResultsPage(score, total);
+        }
+
+        function showResultsPage(score, total) {
+            document.getElementById('quizPage').classList.add('hidden');
+            const resultsPage = document.getElementById('resultsPage');
+            
+            document.getElementById('scoreDisplay').textContent = `${score}/${total}`;
+
+            const iconContainer = document.getElementById('resultIconContainer');
+            const title = document.getElementById('resultTitle');
+            const msg = document.getElementById('resultMessage');
+
+            if (score === total) {
+                title.innerText = "Excellent!";
+                msg.innerText = "You are a security expert!";
+                iconContainer.innerHTML = '<div class="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-xl border-4 border-white/20 text-[#4db848] animate-bounce"><i class="fa-solid fa-trophy text-5xl"></i></div>';
+            } else if (score >= 7) {
+                title.innerText = "Good Job!";
+                msg.innerText = "You have good security awareness.";
+                iconContainer.innerHTML = '<div class="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-xl border-4 border-white/20 text-[#0070ba]"><i class="fa-solid fa-thumbs-up text-5xl"></i></div>';
+            } else {
+                title.innerText = "Needs Improvement";
+                msg.innerText = "Please review the answers.";
+                iconContainer.innerHTML = '<div class="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-xl border-4 border-white/20 text-orange-500"><i class="fa-solid fa-triangle-exclamation text-5xl"></i></div>';
+            }
+
+            resultsPage.classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function viewAnswers() {
+            document.getElementById('resultsPage').classList.add('hidden');
+            document.getElementById('quizPage').classList.remove('hidden');
+            
+            document.getElementById('submitBtn').classList.add('hidden');
+            document.getElementById('exitBtn').classList.remove('hidden');
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function restartQuiz() {
+            window.location.reload();
+        }
+
+        function exitQuiz() {
+            const modal = document.getElementById('thankYouModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+    </script>
+</body>
+</html>
